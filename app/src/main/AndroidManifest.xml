@@ -35,6 +35,9 @@
             android:name=".MainActivity2"
             android:exported="false" />
         <activity
+            android:name=".gpt_mes_test"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

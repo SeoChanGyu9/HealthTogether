@@ -51,5 +51,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="운동종료" />
+    <Button
+        android:id="@+id/gptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gpt테스트" />
 
 </LinearLayout>
