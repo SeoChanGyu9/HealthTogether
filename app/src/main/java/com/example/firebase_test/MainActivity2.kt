@@ -83,7 +83,7 @@ class MainActivity2 : AppCompatActivity() {
             startActivity(Intent(this,Getmatching::class.java))
         }
         //gpt창이동
-        binding.findmatchingButton.setOnClickListener {
+        binding.gptButton.setOnClickListener {
             startActivity(Intent(this,gpt_mes_test::class.java))
         }
         //캘린더
