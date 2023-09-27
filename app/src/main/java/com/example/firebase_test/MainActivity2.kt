@@ -98,6 +98,7 @@ class MainActivity2 : AppCompatActivity() {
         binding.startButton.setOnClickListener {
             Log.d("로그","운동시작버튼 눌림")
             Log.d("로그","uId: "+uId)
+            Log.d("로그","otherUid: "+otherDTO?.uId)
             val time = System.currentTimeMillis()
             //val message = MessageDTO(uId,otherDTO!!.uId.toString(),"운동을 시작했습니다.",time)
             // FCM 전송하기 (푸쉬알림)
@@ -106,7 +107,27 @@ class MainActivity2 : AppCompatActivity() {
             val body = NotificationBody(otherDTO!!.token.toString(),data)
             firebaseViewModel.sendNotification(body)
 
-            fireStore.collection("calendar").document(uId)
+
+
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+            val formatted = current.format(formatter)
+            var data2 = HashMap<String, Any>()
+            data2.put("health","완료")
+            data2.put("otherhealth","완료")
+            data2.put("day",formatted)
+            fireStore.collection("calendar").document(uId).collection("calendar").document(formatted)
+                .set(data2)
+                .addOnSuccessListener {
+                    // 성공할 경우
+                    Toast.makeText(this, "데이터가 추가되었습니다", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { exception ->
+                    // 실패할 경우
+                    Log.w("MainActivity", "Error getting documents: $exception")
+                }
+
+/*            fireStore.collection("calendar").document(uId)
                 .addSnapshotListener { documentSnapshot, _ ->
                     if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
 
@@ -122,7 +143,7 @@ class MainActivity2 : AppCompatActivity() {
                     Log.d("로그","캘린더 접근")
                     //fireStore.collection("calendar").document(uId).collection("calendar").document(formatted).set(newCalendarDTO)
                     //fireStore.collection("calendar").document(uId).set(newCalendarDTO)
-                }
+                }*/
         }
         //운동종료버튼
         binding.endButton.setOnClickListener {
