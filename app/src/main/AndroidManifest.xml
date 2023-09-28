@@ -26,9 +26,6 @@
             android:name=".Myinfo"
             android:exported="false" />
         <activity
-            android:name=".ChattingActivity"
-            android:exported="false" />
-        <activity
             android:name=".ResultActivity"
             android:exported="false" />
         <activity

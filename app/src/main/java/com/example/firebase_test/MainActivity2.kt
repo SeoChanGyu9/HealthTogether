@@ -64,12 +64,7 @@ class MainActivity2 : AppCompatActivity() {
 
 
 
-        // 채팅창으로
-        binding.sendMessageButton.setOnClickListener {
-            val intent = Intent(this, ChattingActivity::class.java)
-            intent.putExtra("otherUid", otherDTO!!.uId.toString())
-            startActivity(intent)
-        }
+
         //내정보
         binding.infoButton.setOnClickListener {
             startActivity(Intent(this,Myinfo::class.java))
