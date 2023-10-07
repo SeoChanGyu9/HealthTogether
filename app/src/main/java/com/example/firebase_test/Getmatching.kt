@@ -52,7 +52,10 @@ class Getmatching : AppCompatActivity() {
                     // 데이터 받아오기
                     for (snapshot in querySnapshot!!.documents) {
                         var item = snapshot.toObject(UserDTO::class.java)
-                        resultDTOs.add(item!!)
+                        //자신을 제외한 데이터 저장
+                        if(item!!.uId != uid)
+                            resultDTOs.add(item!!)
+
                         Log.d("로그", "resultDTOs: "+resultDTOs)
 
                     }
