@@ -44,6 +44,10 @@ class FirebaseViewModel(application: Application) : AndroidViewModel(application
     fun setmatching(){
         repository.setmatching()
     }
+    //매칭등록해제
+    fun cancelmatching(){
+        repository.cancelmatching()
+    }
     //현재 매칭된 상대정보가져오기
     suspend fun getMatchingInfo():String{
         Log.d("로그", "model: ")

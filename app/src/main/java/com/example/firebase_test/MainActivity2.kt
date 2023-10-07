@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -45,21 +46,17 @@ class MainActivity2 : AppCompatActivity() {
             delay(3000)
         }
 
-/*        //중복을 제외한 모든 캘린더 정보 가져오기
-        var resultDTOs: ArrayList<UserDTO> = arrayListOf()
-        fireStore.collection("calendar").document(uId!!).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            resultDTOs.clear()
-            if (querySnapshot == null) {
-                return@addSnapshotListener
-            }
+        //매칭등록했는지 받아오기
+        fireStore.collection("matching").document(uId!!)
+            .addSnapshotListener { documentSnapshot, _ ->
+                if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
 
-            // 데이터 받아오기
-            for (snapshot in querySnapshot!!.collections) {
-                var item = snapshot.toObject(UserDTO::class.java)
-                resultDTOs.add(item!!)
+                val userDTO = documentSnapshot.toObject(UserDTO::class.java)
+                if (userDTO != null) {
+                    binding.matchingButton.visibility = View.INVISIBLE
+                    binding.unmatchingButton.visibility = View.VISIBLE
+                }
             }
-            notifyDataSetChanged()
-        }*/
 
 
 
@@ -72,6 +69,14 @@ class MainActivity2 : AppCompatActivity() {
         //매칭등록
         binding.matchingButton.setOnClickListener {
             firebaseViewModel.setmatching()
+            binding.matchingButton.visibility = View.INVISIBLE
+            binding.unmatchingButton.visibility = View.VISIBLE
+        }
+        //매칭해제
+        binding.unmatchingButton.setOnClickListener {
+            firebaseViewModel.cancelmatching()
+            binding.unmatchingButton.visibility = View.INVISIBLE
+            binding.matchingButton.visibility = View.VISIBLE
         }
         //매칭찾기
         binding.findmatchingButton.setOnClickListener {

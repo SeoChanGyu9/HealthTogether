@@ -148,13 +148,12 @@ class FirebaseRepository() {
                     fireStore.collection("matching").document(userDTO.uId!!).set(userDTO)
                 }
             }
-
-
-
     }
 
-    fun deleteMatching(){
-
+    fun cancelmatching(){
+        var uId : String? = null
+        uId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        fireStore.collection("matching").document(uId).delete()
     }
 
     //프로필 불러오기
