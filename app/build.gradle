@@ -59,7 +59,7 @@ dependencies {
     // JSON의 자바 오브젝트의 직렬화, 역직렬화
     implementation 'com.google.code.gson:gson:2.8.5'
     // okhttp3
-    implementation 'com.squareup.okhttp3:okhttp:3.4.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
 
     // Retrofit
