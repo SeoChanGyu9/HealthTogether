@@ -115,7 +115,7 @@ void callAPI(String question) {
     RequestBody body = RequestBody.create(jsonBody.toString(),JSON);
     Request request = new Request.Builder()
             .url("https://api.openai.com/v1/chat/completions")
-            .header("Authorization","Bearer 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") // API키
+            .header("Authorization","Bearer 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") // API키
             .post(body)
             .build();
 
