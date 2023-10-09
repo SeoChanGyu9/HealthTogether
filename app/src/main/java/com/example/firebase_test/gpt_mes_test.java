@@ -42,7 +42,7 @@ public class gpt_mes_test extends AppCompatActivity {
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client = new OkHttpClient.Builder()
-            .readTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(600, TimeUnit.SECONDS)
             .build();
 
 
@@ -102,7 +102,7 @@ void callAPI(String question) {
         JSONArray messageArr = new JSONArray();
         JSONObject obj = new JSONObject();
         obj.put("role","user");
-        obj.put("content",question);
+        obj.put("content", question);
         messageArr.put(obj);
 
         jsonBody.put("messages",messageArr);
@@ -115,7 +115,7 @@ void callAPI(String question) {
     RequestBody body = RequestBody.create(jsonBody.toString(),JSON);
     Request request = new Request.Builder()
             .url("https://api.openai.com/v1/chat/completions")
-            .header("Authorization","Bearer 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") // API키
+            .header("Authorization","Bearer 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") // API키
             .post(body)
             .build();
 
