@@ -25,7 +25,7 @@ class MainActivity2 : AppCompatActivity() {
     private val firebaseViewModel : FirebaseViewModel by viewModels()
     private val fireStore = FirebaseFirestore.getInstance()
     private var otherDTO : UserDTO? = null
-
+    private var uId =  FirebaseAuth.getInstance().currentUser?.uid.toString()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,8 +34,6 @@ class MainActivity2 : AppCompatActivity() {
         val binding = ActivityMain2Binding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
-        var uId = FirebaseAuth.getInstance().currentUser?.uid
 
         //내상대정보 얻기
         fireStore.collection("match").document(uId!!).get()
@@ -74,7 +72,7 @@ class MainActivity2 : AppCompatActivity() {
         }
         //매칭해제
         binding.unmatchingButton.setOnClickListener {
-            firebaseViewModel.cancelmatching()
+            firebaseViewModel.cancelmatching(uId)
             binding.unmatchingButton.visibility = View.INVISIBLE
             binding.matchingButton.visibility = View.VISIBLE
         }

@@ -150,9 +150,10 @@ class FirebaseRepository() {
             }
     }
 
-    fun cancelmatching(){
-        var uId : String? = null
-        uId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+    //매칭목록에서 삭제
+    fun cancelmatching(uId : String){
+        //var uId : String? = null
+        //uId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         fireStore.collection("matching").document(uId).delete()
     }
 
