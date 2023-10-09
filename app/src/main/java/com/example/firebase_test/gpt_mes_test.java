@@ -102,7 +102,7 @@ void callAPI(String question) {
         JSONArray messageArr = new JSONArray();
         JSONObject obj = new JSONObject();
         obj.put("role","user");
-        obj.put("content", question);
+        obj.put("content",question);
         messageArr.put(obj);
 
         jsonBody.put("messages",messageArr);
@@ -115,7 +115,7 @@ void callAPI(String question) {
     RequestBody body = RequestBody.create(jsonBody.toString(),JSON);
     Request request = new Request.Builder()
             .url("https://api.openai.com/v1/chat/completions")
-            .header("Authorization","Bearer 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") // API키
+            .header("Authorization","Bearer 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") // API키
             .post(body)
             .build();
 
