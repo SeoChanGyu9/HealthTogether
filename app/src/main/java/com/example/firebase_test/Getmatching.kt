@@ -1,5 +1,6 @@
 package com.example.firebase_test
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -105,6 +106,11 @@ class Getmatching : AppCompatActivity() {
                     ,"매칭 완료","매칭이 완료되었습니다.")
                 val body = NotificationBody(resultDTOs!![position].token.toString(),data)
                 firebaseViewModel.sendNotification(body)
+
+                val intent = Intent(this@Getmatching, MainActivity2::class.java)
+                startActivity(intent)
+
+                finish()
 
             }
         }
