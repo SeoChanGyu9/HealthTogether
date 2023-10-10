@@ -20,6 +20,8 @@ class Calendar2 : AppCompatActivity() {
     private val fireStore = FirebaseFirestore.getInstance()
     private var uId : String? = null
     private var calendarDTO : CalendarDTO? = null
+    private var matchDTO : MatchDTO? = null
+    var otherUid : String? = null
 
 
 
@@ -98,6 +100,42 @@ class Calendar2 : AppCompatActivity() {
 
                     binding.textView.text = calData
                 }
+
+            fireStore.collection("match").document(uId!!)
+                .addSnapshotListener { documentSnapshot, _ ->
+                    if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
+
+
+                    matchDTO = documentSnapshot.toObject(MatchDTO::class.java)
+                    Log.d("로그","matchDTO: "+matchDTO)
+
+                    if (matchDTO != null){
+                        otherUid = matchDTO!!.uid.toString()
+
+                        fireStore.collection("calendar").document(otherUid!!).collection("calendar").document(y.toString()+m+d)
+                            .addSnapshotListener { documentSnapshot, _ ->
+                                if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
+                                var calData : String? = null
+                                Log.d("로그","CalendarDay.today(): "+CalendarDay.today())
+
+                                calendarDTO = documentSnapshot.toObject(CalendarDTO::class.java)
+                                Log.d("로그","calendarDTO3: "+calendarDTO)
+
+                                if (calendarDTO != null){
+                                    calData = calendarDTO!!.health.toString()
+                                }
+                                val cal = CalendarDay.from(2023,6,10)
+                                val calList = ArrayList<CalendarDay>()
+                                //calList.add(CalendarDay{2023-6-11})
+
+                                binding.textView2.text = calData
+                            }
+                    }
+
+
+                }
+
+
 
 
         }

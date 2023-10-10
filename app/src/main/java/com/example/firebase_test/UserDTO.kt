@@ -30,6 +30,15 @@ data class CalendarDTO(
 
 )
 
+data class MatchDTO(
+    var age : String? = null,
+    var height : String? = null,
+    var token : String? = null,
+    var uid : String? = null,
+    var userId : String? = null,
+    var weight : String? = null,
+)
+
 
 /*
 data class MatchDTO(

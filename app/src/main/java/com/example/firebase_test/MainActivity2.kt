@@ -106,13 +106,12 @@ class MainActivity2 : AppCompatActivity() {
             firebaseViewModel.sendNotification(body)
 
 
-
+            //캘린더 DB에 내 운동기록을 저장
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
             val formatted = current.format(formatter)
             var data2 = HashMap<String, Any>()
             data2.put("health","완료")
-            data2.put("otherhealth","완료")
             data2.put("day",formatted)
             fireStore.collection("calendar").document(uId).collection("calendar").document(formatted)
                 .set(data2)
