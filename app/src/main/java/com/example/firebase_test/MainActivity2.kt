@@ -84,13 +84,12 @@ class MainActivity2 : AppCompatActivity() {
         binding.gptButton.setOnClickListener {
             startActivity(Intent(this,gpt_mes_test::class.java))
         }
-        //캘린더
-        binding.calendarButton.setOnClickListener {
-            startActivity(Intent(this,Calendar::class.java))
-        }
         //커스텀캘린더
         binding.calendar2Button.setOnClickListener {
-            startActivity(Intent(this,Calendar2::class.java))
+            val intent = Intent(this, Calendar2::class.java)
+            if(otherDTO !=null)
+                intent.putExtra("otheruid" , otherDTO!!.uId.toString() )
+            startActivity(intent)
         }
         //운동시작버튼
         binding.startButton.setOnClickListener {

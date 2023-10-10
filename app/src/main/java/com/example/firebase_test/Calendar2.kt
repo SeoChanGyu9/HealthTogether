@@ -31,6 +31,8 @@ class Calendar2 : AppCompatActivity() {
         binding = ActivityCalendar2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        otherUid = intent.getStringExtra("otheruid")
+
         binding.calendarView.setSelectedDate(CalendarDay.today())
 
         uId = FirebaseAuth.getInstance().currentUser?.uid
@@ -100,7 +102,7 @@ class Calendar2 : AppCompatActivity() {
 
                     binding.textView.text = calData
                 }
-
+            //상대방 id찾기
             fireStore.collection("match").document(uId!!)
                 .addSnapshotListener { documentSnapshot, _ ->
                     if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
@@ -108,10 +110,12 @@ class Calendar2 : AppCompatActivity() {
 
                     matchDTO = documentSnapshot.toObject(MatchDTO::class.java)
                     Log.d("로그","matchDTO: "+matchDTO)
-
+                    //상대가 있다면
                     if (matchDTO != null){
                         otherUid = matchDTO!!.uid.toString()
+                        Log.d("로그","otherUid2: "+ otherUid)
 
+                        //상대 DB에서 운동완료 정보를 찾아옴
                         fireStore.collection("calendar").document(otherUid!!).collection("calendar").document(y.toString()+m+d)
                             .addSnapshotListener { documentSnapshot, _ ->
                                 if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
@@ -140,6 +144,10 @@ class Calendar2 : AppCompatActivity() {
 
         }
 
+        //상대가 있다면 한명만 운동완료시 주황색, 둘다 완료시 초록색
+        //상대가 없다면 자신만 완료시 초록색
+        val myCom = mutableListOf<String>()
+        var otherCom = mutableListOf<String>()
 
         var resultDTOs: ArrayList<CalendarDTO> = arrayListOf()
         fireStore.collection("calendar").document(uId!!).collection("calendar")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -157,19 +165,63 @@ class Calendar2 : AppCompatActivity() {
                 if(item.health == "완료"){
                     var tk1 = item.day!!.chunked(4);
                     var tk2 = tk1[1].chunked(2);
+                    myCom.add(item.day.toString())
                     Log.d("로그","item.day: "+tk1[0]+" "+tk2[0] + " " + tk2[1])
                     val cal = CalendarDay.from(tk1[0].toInt(),tk2[0].toInt(),tk2[1].toInt())
                     //운동완료시 표시
-                    binding.calendarView.addDecorator(EventDecorator(Color.GREEN, Collections.singleton(cal) )  )
+                    binding.calendarView.addDecorator(EventDecorator(Color.RED, Collections.singleton(cal) )  )
                 }
 
             }
+            //상대
+            fireStore.collection("calendar").document(otherUid!!).collection("calendar")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                resultDTOs.clear()
+                if (querySnapshot == null) {
+                    return@addSnapshotListener
+                }
+
+                // 데이터 받아오기
+                for (snapshot in querySnapshot!!.documents) {
+                    var item = snapshot.toObject(CalendarDTO::class.java)
+                    resultDTOs.add(item!!)
+                    Log.d("로그","resultDTOs: "+resultDTOs)
+
+                    if(item.health == "완료"){
+                        var tk1 = item.day!!.chunked(4)
+                        var tk2 = tk1[1].chunked(2)
+                        otherCom.add(item.day.toString())
+                        Log.d("로그","myCom2123: "+myCom)
+                        Log.d("로그","otherCom2123: "+otherCom)
+                        Log.d("로그","item.day: "+tk1[0]+" "+tk2[0] + " " + tk2[1])
+                        val cal = CalendarDay.from(tk1[0].toInt(),tk2[0].toInt(),tk2[1].toInt())
+                        //운동완료시 표시
+                        binding.calendarView.addDecorator(EventDecorator(Color.RED, Collections.singleton(cal) )  )
+                    }
+
+                }
+                Log.d("로그","myCom3123: "+myCom)
+                Log.d("로그","otherCom3123: "+otherCom)
+
+                for(i in myCom){
+                    val r = otherCom.find { it==i }
+                    if(r!=null) {
+                        Log.d("로그", "rrrrr: " + r)
+                        var tk1 = r.chunked(4)
+                        var tk2 = tk1[1].chunked(2)
+                        val cal = CalendarDay.from(tk1[0].toInt(),tk2[0].toInt(),tk2[1].toInt())
+                        binding.calendarView.addDecorator(EventDecorator(Color.GREEN, Collections.singleton(cal) )  )
+                    }
+
+                }
+            }
+            Log.d("로그","myCom1123: "+myCom)
+            Log.d("로그","otherCom1123: "+otherCom)
 
         }
 
+
+
         //binding.calendarView.addDecorator(EventDecorator(Color.RED, Collections.singleton(CalendarDay.today() ) )  )
-
-
 
 
 
