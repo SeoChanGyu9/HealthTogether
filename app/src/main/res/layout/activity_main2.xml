@@ -26,6 +26,12 @@
         android:layout_height="wrap_content"
         android:text="매칭등록" />
     <Button
+        android:id="@+id/unmatchingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="매칭해제" />
+    <Button
         android:id="@+id/findmatchingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.example.firebase_test
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -52,7 +53,10 @@ class Getmatching : AppCompatActivity() {
                     // 데이터 받아오기
                     for (snapshot in querySnapshot!!.documents) {
                         var item = snapshot.toObject(UserDTO::class.java)
-                        resultDTOs.add(item!!)
+                        //자신을 제외한 데이터 저장
+                        if(item!!.uId != uid)
+                            resultDTOs.add(item!!)
+
                         Log.d("로그", "resultDTOs: "+resultDTOs)
 
                     }
@@ -87,12 +91,26 @@ class Getmatching : AppCompatActivity() {
             viewHolder.binding.resultHeight.text = resultDTOs!![position].height
             viewHolder.binding.resultWeight.text = resultDTOs!![position].weight
             //val otheruId = resultDTOs!![position].uId.toString()
-            val otheruId = resultDTOs!![position]
+            val otheruId = resultDTOs!![position].uId.toString()
 
-
+            //매칭버튼 누르기
             viewHolder.binding.buttonMatching.setOnClickListener{
-                Log.d("로그","otheruId: "+otheruId)
+                Log.d("로그11","otheruId: "+otheruId)
                 firebaseViewModel.setMatchingInfo(userDTO!!, resultDTOs!![position])
+                //매칭목록에서 삭제
+                firebaseViewModel.cancelmatching(uid!!)
+                firebaseViewModel.cancelmatching(otheruId!!)
+
+                // FCM 전송하기 (푸쉬알림)
+                val data = NotificationBody.NotificationData(getString(R.string.app_name)
+                    ,"매칭 완료","매칭이 완료되었습니다.")
+                val body = NotificationBody(resultDTOs!![position].token.toString(),data)
+                firebaseViewModel.sendNotification(body)
+
+                val intent = Intent(this@Getmatching, MainActivity2::class.java)
+                startActivity(intent)
+
+                finish()
 
             }
         }

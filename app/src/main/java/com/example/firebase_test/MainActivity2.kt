@@ -1,13 +1,15 @@
 package com.example.firebase_test
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import com.example.firebase_test.alarm.AlarmActivity
 import com.example.firebase_test.databinding.ActivityMain2Binding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,7 +25,7 @@ class MainActivity2 : AppCompatActivity() {
     private val firebaseViewModel : FirebaseViewModel by viewModels()
     private val fireStore = FirebaseFirestore.getInstance()
     private var otherDTO : UserDTO? = null
-
+    private var uId =  FirebaseAuth.getInstance().currentUser?.uid.toString()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -32,8 +34,6 @@ class MainActivity2 : AppCompatActivity() {
         val binding = ActivityMain2Binding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
-        var uId = FirebaseAuth.getInstance().currentUser?.uid
 
         //내상대정보 얻기
         fireStore.collection("match").document(uId!!).get()
@@ -44,31 +44,22 @@ class MainActivity2 : AppCompatActivity() {
             delay(3000)
         }
 
-/*        //중복을 제외한 모든 캘린더 정보 가져오기
-        var resultDTOs: ArrayList<UserDTO> = arrayListOf()
-        fireStore.collection("calendar").document(uId!!).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            resultDTOs.clear()
-            if (querySnapshot == null) {
-                return@addSnapshotListener
+        //매칭등록했는지 받아오기
+        fireStore.collection("matching").document(uId!!)
+            .addSnapshotListener { documentSnapshot, _ ->
+                if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
+
+                val userDTO = documentSnapshot.toObject(UserDTO::class.java)
+                if (userDTO != null) {
+                    binding.matchingButton.visibility = View.INVISIBLE
+                    binding.unmatchingButton.visibility = View.VISIBLE
+                }
             }
 
-            // 데이터 받아오기
-            for (snapshot in querySnapshot!!.collections) {
-                var item = snapshot.toObject(UserDTO::class.java)
-                resultDTOs.add(item!!)
-            }
-            notifyDataSetChanged()
-        }*/
 
 
 
 
-        // 채팅창으로
-        binding.sendMessageButton.setOnClickListener {
-            val intent = Intent(this, ChattingActivity::class.java)
-            intent.putExtra("otherUid", otherDTO!!.uId.toString())
-            startActivity(intent)
-        }
         //내정보
         binding.infoButton.setOnClickListener {
             startActivity(Intent(this,Myinfo::class.java))
@@ -76,6 +67,14 @@ class MainActivity2 : AppCompatActivity() {
         //매칭등록
         binding.matchingButton.setOnClickListener {
             firebaseViewModel.setmatching()
+            binding.matchingButton.visibility = View.INVISIBLE
+            binding.unmatchingButton.visibility = View.VISIBLE
+        }
+        //매칭해제
+        binding.unmatchingButton.setOnClickListener {
+            firebaseViewModel.cancelmatching(uId)
+            binding.unmatchingButton.visibility = View.INVISIBLE
+            binding.matchingButton.visibility = View.VISIBLE
         }
         //매칭찾기
         binding.findmatchingButton.setOnClickListener {
@@ -85,22 +84,18 @@ class MainActivity2 : AppCompatActivity() {
         binding.gptButton.setOnClickListener {
             startActivity(Intent(this,gpt_mes_test::class.java))
         }
-        //알람
-        binding.alarmButton.setOnClickListener {
-            startActivity(Intent(this,AlarmActivity::class.java))
-        }
-        //캘린더
-        binding.calendarButton.setOnClickListener {
-            startActivity(Intent(this,Calendar::class.java))
-        }
         //커스텀캘린더
         binding.calendar2Button.setOnClickListener {
-            startActivity(Intent(this,Calendar2::class.java))
+            val intent = Intent(this, Calendar2::class.java)
+            if(otherDTO !=null)
+                intent.putExtra("otheruid" , otherDTO!!.uId.toString() )
+            startActivity(intent)
         }
         //운동시작버튼
         binding.startButton.setOnClickListener {
             Log.d("로그","운동시작버튼 눌림")
             Log.d("로그","uId: "+uId)
+            Log.d("로그","otherUid: "+otherDTO?.uId)
             val time = System.currentTimeMillis()
             //val message = MessageDTO(uId,otherDTO!!.uId.toString(),"운동을 시작했습니다.",time)
             // FCM 전송하기 (푸쉬알림)
@@ -109,7 +104,26 @@ class MainActivity2 : AppCompatActivity() {
             val body = NotificationBody(otherDTO!!.token.toString(),data)
             firebaseViewModel.sendNotification(body)
 
-            fireStore.collection("calendar").document(uId)
+
+            //캘린더 DB에 내 운동기록을 저장
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+            val formatted = current.format(formatter)
+            var data2 = HashMap<String, Any>()
+            data2.put("health","완료")
+            data2.put("day",formatted)
+            fireStore.collection("calendar").document(uId).collection("calendar").document(formatted)
+                .set(data2)
+                .addOnSuccessListener {
+                    // 성공할 경우
+                    Toast.makeText(this, "데이터가 추가되었습니다", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { exception ->
+                    // 실패할 경우
+                    Log.w("MainActivity", "Error getting documents: $exception")
+                }
+
+/*            fireStore.collection("calendar").document(uId)
                 .addSnapshotListener { documentSnapshot, _ ->
                     if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
 
@@ -125,7 +139,7 @@ class MainActivity2 : AppCompatActivity() {
                     Log.d("로그","캘린더 접근")
                     //fireStore.collection("calendar").document(uId).collection("calendar").document(formatted).set(newCalendarDTO)
                     //fireStore.collection("calendar").document(uId).set(newCalendarDTO)
-                }
+                }*/
         }
         //운동종료버튼
         binding.endButton.setOnClickListener {
