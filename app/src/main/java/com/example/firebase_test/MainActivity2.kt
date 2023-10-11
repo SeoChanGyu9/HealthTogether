@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import com.example.firebase_test.alarm.AlarmActivity
 import com.example.firebase_test.databinding.ActivityMain2Binding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -83,6 +84,10 @@ class MainActivity2 : AppCompatActivity() {
         //gpt창이동
         binding.gptButton.setOnClickListener {
             startActivity(Intent(this,gpt_mes_test::class.java))
+        }
+        //알람 창이동
+        binding.alarmButton.setOnClickListener {
+            startActivity(Intent(this,AlarmActivity::class.java))
         }
         //커스텀캘린더
         binding.calendar2Button.setOnClickListener {
