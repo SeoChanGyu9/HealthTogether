@@ -1,14 +1,13 @@
 package com.example.firebase_test
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import com.example.firebase_test.alarm.AlarmActivity
 import com.example.firebase_test.databinding.ActivityMain2Binding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -85,6 +84,10 @@ class MainActivity2 : AppCompatActivity() {
         //gpt창이동
         binding.gptButton.setOnClickListener {
             startActivity(Intent(this,gpt_mes_test::class.java))
+        }
+        //알람
+        binding.alarmButton.setOnClickListener {
+            startActivity(Intent(this,AlarmActivity::class.java))
         }
         //캘린더
         binding.calendarButton.setOnClickListener {
