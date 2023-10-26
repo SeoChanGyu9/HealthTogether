@@ -59,7 +59,7 @@ class CustomAlarmReceiver : BroadcastReceiver() {
             // Notification
             val builder01: Builder = Builder(context, CHANNEL_ID).apply {
                 setSmallIcon(R.drawable.ic_launcher_foreground)
-                setContentTitle("알람 시작 및 종료 시간입니다")
+                setContentTitle("운동 시작 및 종료 시간입니다")
                 setContentText(time)
                 priority = NotificationCompat.PRIORITY_DEFAULT
                 setContentIntent(pendingIntent)
