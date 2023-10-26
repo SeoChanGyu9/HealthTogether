@@ -50,7 +50,7 @@ class TimePickerActivity : AppCompatActivity() {
         okBtn = findViewById(R.id.okBtn)
         okBtn.setOnClickListener {
 
-            // 다양한 Android API 버전에 대해 시간 값을 다르게 설정합니다. 이 경우에는 Android API 23을 의미
+            // 다양한 Android API 버전에 대해 시간 값을 다르게 설정. 이 경우에는 Android API 23을 의미
             hour = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 timePicker.hour
             } else {

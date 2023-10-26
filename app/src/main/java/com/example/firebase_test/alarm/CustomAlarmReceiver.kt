@@ -62,11 +62,11 @@ class CustomAlarmReceiver : BroadcastReceiver() {
             // Notification
             val builder01: Builder = Builder(context, CHANNEL_ID).apply {
                 setSmallIcon(R.drawable.ic_launcher_foreground)
-                setContentTitle("알람 울림")  // Set Title
-                setContentText(time)   // Set Content
-                priority = NotificationCompat.PRIORITY_DEFAULT  // Set PRIORITY
-                setContentIntent(pendingIntent) // Notification Click Event
-                setAutoCancel(true) // Remove After Click Notification
+                setContentTitle("알람 울림")
+                setContentText(time)
+                priority = NotificationCompat.PRIORITY_DEFAULT
+                setContentIntent(pendingIntent)
+                setAutoCancel(true)
             }
 
             if (ActivityCompat.checkSelfPermission(
