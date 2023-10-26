@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.firebase_test.alarm
 
 import android.content.Context

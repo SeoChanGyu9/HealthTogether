@@ -11,7 +11,7 @@ import com.example.firebase_test.alarm.models.Time
 
 class AdapterActivity : BaseAdapter() {
     private val listviewitem = ArrayList<Time>()
-    private val arrayList = listviewitem // Backup arrayList
+    private val arrayList = listviewitem
 
     override fun getCount(): Int = arrayList.size
 
