@@ -83,7 +83,7 @@ class CustomAlarmReceiver : BroadcastReceiver() {
     private fun createNotificationChannel(context: Context?): NotificationManager? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "MyAlarm"
-            val descriptionText = "알람 울림"
+            val descriptionText = "운동 시작 및 종료 시간입니다"
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 name,
