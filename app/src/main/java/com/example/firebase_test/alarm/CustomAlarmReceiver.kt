@@ -17,9 +17,6 @@ import androidx.core.app.NotificationCompat.Builder
 import com.example.firebase_test.R
 import com.example.firebase_test.alarm.AlarmActivity.Companion.RECEIVCER_REQUEST_CODE
 
-/**
- * 설정된 알람 발생 코드
- */
 class CustomAlarmReceiver : BroadcastReceiver() {
 
     companion object {
@@ -62,7 +59,7 @@ class CustomAlarmReceiver : BroadcastReceiver() {
             // Notification
             val builder01: Builder = Builder(context, CHANNEL_ID).apply {
                 setSmallIcon(R.drawable.ic_launcher_foreground)
-                setContentTitle("알람 울림")
+                setContentTitle("알람 시작 및 종료 시간입니다")
                 setContentText(time)
                 priority = NotificationCompat.PRIORITY_DEFAULT
                 setContentIntent(pendingIntent)
@@ -83,7 +80,7 @@ class CustomAlarmReceiver : BroadcastReceiver() {
     private fun createNotificationChannel(context: Context?): NotificationManager? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "MyAlarm"
-            val descriptionText = "운동 시작 및 종료 시간입니다"
+            val descriptionText = "알람 울림"
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 name,
