@@ -56,7 +56,7 @@ class CustomAlarmReceiver : BroadcastReceiver() {
                 RingToneCustom.getVibrator(context)?.vibrate(2000)
             }
 
-            // Notification
+
             val builder01: Builder = Builder(context, CHANNEL_ID).apply {
                 setSmallIcon(R.drawable.ic_launcher_foreground)
                 setContentTitle("운동 시작 및 종료 시간입니다")
