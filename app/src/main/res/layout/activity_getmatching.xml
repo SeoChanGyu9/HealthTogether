@@ -5,7 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingTop="10dp"
     tools:context=".Getmatching">
+
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="80dp"
+        android:text="매칭 찾기"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/item_result_round"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
