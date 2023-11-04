@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -73,4 +74,10 @@ dependencies {
     //viewmodel
     implementation 'androidx.activity:activity-ktx:1.1.0'
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
+    //Firebase Storage
+    implementation 'com.google.firebase:firebase-storage'
+    //flideApp
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
 }

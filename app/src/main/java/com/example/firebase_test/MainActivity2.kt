@@ -36,6 +36,7 @@ class MainActivity2 : AppCompatActivity() {
 
         setContentView(binding.root)
 
+
         //내상대정보 얻기
         fireStore.collection("match").document(uId!!).get()
             .addOnCompleteListener { documentSnapshot->
@@ -87,7 +88,8 @@ class MainActivity2 : AppCompatActivity() {
         }
         //알람 창이동
         binding.alarmButton.setOnClickListener {
-            startActivity(Intent(this,AlarmActivity::class.java))
+            //startActivity(Intent(this,AlarmActivity::class.java))
+            startActivity(Intent(this,TestImage::class.java))
         }
         //커스텀캘린더
         binding.calendar2Button.setOnClickListener {
@@ -114,9 +116,13 @@ class MainActivity2 : AppCompatActivity() {
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
             val formatted = current.format(formatter)
+            val formatter2 = DateTimeFormatter.ofPattern("HHmm")
+            val formatted2 = current.format(formatter2)
+            Log.d("로그","시간: "+ formatted2)
             var data2 = HashMap<String, Any>()
             data2.put("health","완료")
             data2.put("day",formatted)
+            data2.put("time",formatted2)
             fireStore.collection("calendar").document(uId).collection("calendar").document(formatted)
                 .set(data2)
                 .addOnSuccessListener {

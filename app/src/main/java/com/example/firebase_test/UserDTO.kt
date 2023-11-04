@@ -25,8 +25,8 @@ data class MessageDTO(
 
 data class CalendarDTO(
     var health : String? = null,
-    var otherhealth : String? = null,
-    var day : String? = null
+    var day : String? = null,
+    var time : String? = null
 
 )
 

@@ -88,6 +88,7 @@ class Calendar2 : AppCompatActivity() {
                 .addSnapshotListener { documentSnapshot, _ ->
                     if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
                     var calData : String? = null
+                    var calData_time : String? = null
                     Log.d("로그","CalendarDay.today(): "+CalendarDay.today())
 
                     calendarDTO = documentSnapshot.toObject(CalendarDTO::class.java)
@@ -95,12 +96,14 @@ class Calendar2 : AppCompatActivity() {
 
                     if (calendarDTO != null){
                         calData = calendarDTO!!.health.toString()
+                        calData_time = calendarDTO!!.time.toString()
                     }
                     val cal = CalendarDay.from(2023,6,10)
                     val calList = ArrayList<CalendarDay>()
                     //calList.add(CalendarDay{2023-6-11})
 
                     binding.textView.text = calData
+                    binding.timetext.text = calData_time
                 }
             //상대방 id찾기
             fireStore.collection("match").document(uId!!)
@@ -120,6 +123,7 @@ class Calendar2 : AppCompatActivity() {
                             .addSnapshotListener { documentSnapshot, _ ->
                                 if (documentSnapshot == null) return@addSnapshotListener    //데이터가없다면
                                 var calData : String? = null
+                                var calData_time : String? = null
                                 Log.d("로그","CalendarDay.today(): "+CalendarDay.today())
 
                                 calendarDTO = documentSnapshot.toObject(CalendarDTO::class.java)
@@ -127,12 +131,14 @@ class Calendar2 : AppCompatActivity() {
 
                                 if (calendarDTO != null){
                                     calData = calendarDTO!!.health.toString()
+                                    calData_time = calendarDTO!!.time.toString()
                                 }
                                 val cal = CalendarDay.from(2023,6,10)
                                 val calList = ArrayList<CalendarDay>()
                                 //calList.add(CalendarDay{2023-6-11})
 
                                 binding.textView2.text = calData
+                                binding.timetext2.text = calData_time
                             }
                     }
 
@@ -227,4 +233,6 @@ class Calendar2 : AppCompatActivity() {
 
 
     }
+
+
 }

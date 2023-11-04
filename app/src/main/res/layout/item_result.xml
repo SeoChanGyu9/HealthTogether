@@ -14,11 +14,11 @@
 
         <TextView
             android:id="@+id/resultNickname"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="김철수"
-            android:padding="10dp" />
+            android:text="user1"
+            android:padding="5dp" />
 
         <TextView
             android:id="@+id/resultAge"
@@ -48,7 +48,7 @@
             android:id="@+id/text3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="10dp"
             android:text="CM"
             android:textSize="18sp" />
 
